@@ -1,7 +1,8 @@
 $$ = require('./multiplo.js')
-out = 'dist/lostcities'
+out = 'dist'
 $$.clear(out)
 $$.clone('src/static', out)
+out += '/data/lostcities/lostcities'
 
 const { allVariants } = require('./block_palettes/common.js')
 const { generatePalettes } = require('./block_palettes/index.js')
@@ -55,5 +56,5 @@ eval($$.create('src/style.json', out + '/styles/standard.json'));
 
 
 $$.clear('D:/Games/curseforge/minecraft/Instances/All the Mods 7 - ATM7/kubejs/data/lostcities')
-$$.clone(out, 'D:/Games/curseforge/minecraft/Instances/All the Mods 7 - ATM7/kubejs/data/lostcities/lostcities')
+$$.clone('dist', 'D:/Games/curseforge/minecraft/Instances/All the Mods 7 - ATM7/kubejs')
 console.log('Done!')

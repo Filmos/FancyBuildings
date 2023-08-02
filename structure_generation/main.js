@@ -2,7 +2,6 @@ $$ = require('../multiplo.js')
 var get_building_bases = require('./building_base.js')
 var generate_floors = require('./floor_generation.js')
 
-out = './dist/lostcities'
 src = 'src'
 
 function save_building(building, floors) {

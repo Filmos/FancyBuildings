@@ -1,4 +1,4 @@
-var { makeSingleBlockPallete, allVariants, makeSimplePalette, makePalleteWithRotation } = require('./common.js')
+var { makeSingleBlockPallete, allVariants, makeSimplePalette, makePalleteWithRotation, palleteWithRotation, singleBlockPallete, makeCombinedPalette, palleteWithMultiblock, overridePlacement } = require('./common.js')
 
 function makeBars() {
     makeSingleBlockPallete('bars', ':', [
@@ -88,6 +88,13 @@ function makeDeskDecor() {
     makePalleteWithRotation('desk_decor', '⇣⇢⇡⇠', [deskDecor])
 }
 
+function makeFurniture() {
+    let chairs = palleteWithRotation('⇑⇐⇓⇒', ['cfm:oak_chair', 'cfm:spruce_chair', 'cfm:birch_chair', 'cfm:jungle_chair', 'cfm:acacia_chair', 'cfm:dark_oak_chair', 'cfm:crimson_chair', 'cfm:warped_chair', 'cfm:stripped_oak_chair', 'cfm:stripped_spruce_chair', 'cfm:stripped_birch_chair', 'cfm:stripped_jungle_chair', 'cfm:stripped_acacia_chair', 'cfm:stripped_dark_oak_chair', 'cfm:stripped_crimson_chair', 'cfm:stripped_warped_chair'].map(x => `${x}[waterlogged=false]`))
+    let tableBase = [0, 1].map(_ => ['cfm:oak_table', 'cfm:spruce_table', 'cfm:birch_table', 'cfm:jungle_table', 'cfm:acacia_table', 'cfm:dark_oak_table', 'cfm:crimson_table', 'cfm:warped_table']).flat().map(x => `${x}[waterlogged=false]`)
+    let tables = overridePlacement(singleBlockPallete('✜', tableBase))
+    makeCombinedPalette('furniture', chairs, tables)
+}
+
 module.exports = function() {
     makeBars()
     makeCeilingDecorations()
@@ -113,5 +120,5 @@ module.exports = function() {
     makeSingleBlockPallete('composter', 'ߛ', ['minecraft:composter'])
     makeDeskDecor()
     makePalleteWithRotation('trapdoor', '⥐⥏⥎⥑', ['minecraft:iron_trapdoor', 'everythingcopper:copper_trapdoor', 'supplementaries:lead_trapdoor', 'supplementaries:silver_trapdoor', 'minecraft:dark_oak_trapdoor', 'minecraft:spruce_trapdoor'].map(x=>`${x}[half=top]`))
-    makePalleteWithRotation('screen', '⇓⇒⇑⇐', ['computercraft:monitor_normal'])
+    makeFurniture()
 }

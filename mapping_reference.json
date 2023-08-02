@@ -55,7 +55,10 @@
     "ߍ": "Campfire",
     "ߛ": "Composter",
     "⇣⇢⇡⇠": "Desk decor (66% chance for air)",
-    "⥐⥏⥎⥑": "Trapdoor (upper, closed)"
+    "⥐⥏⥎⥑": "Trapdoor (upper, closed)",
+
+    "⇑⇐⇓⇒": "Chair (consistent with furniture)",
+    "✜": "Table (consistent with furniture)"
 },
 {
     " ": "Air",
