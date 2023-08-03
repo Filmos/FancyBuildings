@@ -70,31 +70,24 @@ function singleBlockPallete(char, pallettes) {
 }
 function makeSingleBlockPallete(name, char, pallettes) {makeSimplePalette(name, singleBlockPallete(char, pallettes))}
 
-function makeCombinedPalette(name, ...pallettes) {
+function combinedPalette(...pallettes) {
     let expectedLength = pallettes[0].blocks.length
     let actualLengths = pallettes.map(p => `${p.chars}: ${p.blocks.length}`).join("\n")
     if(pallettes.some(p => p.blocks.length != expectedLength)) throw new Error(`Invalid combined pallette '${name}', all pallettes must have the same number of blocks, got:\n${actualLengths}`)
 
-    let combinedPallette = {
+    let result = {
         chars: pallettes.map(p => p.chars).flat(),
         blocks: pallettes[0].blocks.map((_, i) => pallettes.map(p => p.blocks[i]).flat())
     }
-    makeSimplePalette(name, combinedPallette)
+    return result
 }
+function makeCombinedPalette(name,...pallettes) {makeSimplePalette(name, combinedPalette(...pallettes))}
 
-function palleteWithMultiblock(chars, blocks) {
-    let suffixMap = {
-        [chars[0]]: '',
-        [chars[1]]: '[south=true,east=false,north=false,west=false]',
-        [chars[2]]: '[east=true,north=false,west=false,south=false]',
-        [chars[3]]: '[north=true,east=false,west=false,south=false]',
-        [chars[4]]: '[west=true,east=false,north=false,south=false]',
-        [chars[5]]: '[south=true,north=true,east=false,west=false]',
-        [chars[6]]: '[east=true,west=true,north=false,south=false]'
-    }
-    addRotation(chars.slice(1, 5))
-    addHalfRotation(chars.slice(5, 7))
-    return palleteWithSuffix(suffixMap, blocks)
+function splitPalette(palette) {
+    return Object.fromEntries(palette.chars.map((c, i) => [c, {
+        chars: [c],
+        blocks: palette.blocks.map(b => [b[i]])
+    }]))
 }
 
 function overridePlacement(pallette) {
@@ -110,7 +103,7 @@ module.exports = {
     singleBlockPallete, makeSingleBlockPallete,
     palleteWithSuffix, makePalleteWithSuffix,
     palleteWithRotation, makePalleteWithRotation,
-    palleteWithMultiblock,
     overridePlacement,
-    makeCombinedPalette
+    combinedPalette, makeCombinedPalette, 
+    splitPalette
 } 

@@ -1,4 +1,4 @@
-var { makeSingleBlockPallete, allVariants, makeSimplePalette, makePalleteWithRotation, palleteWithRotation, singleBlockPallete, makeCombinedPalette, palleteWithMultiblock, overridePlacement } = require('./common.js')
+var { makeSingleBlockPallete, allVariants, makeSimplePalette, makePalleteWithRotation, palleteWithRotation, singleBlockPallete, makeCombinedPalette, palleteWithMultiblock, overridePlacement, splitPalette } = require('./common.js')
 
 function makeBars() {
     makeSingleBlockPallete('bars', ':', [
@@ -70,8 +70,9 @@ function makeFloralDecorations() {
         ]
     }
     palette['blocks'] = palette['blocks'].map(p => [p[0], p[1].map(b => b+'[persistent=true]')])
-    makeSimplePalette("floral", palette)
-    makeSingleBlockPallete("wood_stem", "⬝", [['absentbydesign:wall_acacia_log', 'absentbydesign:wall_birch_log', 'absentbydesign:wall_dark_oak_log', 'absentbydesign:wall_jungle_log', 'absentbydesign:wall_oak_log', 'absentbydesign:wall_spruce_log']])
+    let subPallettes = splitPalette(palette)
+    makeCombinedPalette("floral", subPallettes["F"], overridePlacement(subPallettes["f"]))
+    makeSingleBlockPallete("wood_stem", "⬝", [['absentbydesign:wall_acacia_log', [4, 'minecraft:potted_dead_bush'], 'absentbydesign:wall_birch_log', 'absentbydesign:wall_dark_oak_log', 'absentbydesign:wall_jungle_log', 'absentbydesign:wall_oak_log', 'absentbydesign:wall_spruce_log']])
     makeSingleBlockPallete("planter", "⬞", ['supplementaries:planter'])
 }
 
@@ -88,12 +89,6 @@ function makeDeskDecor() {
     makePalleteWithRotation('desk_decor', '⇣⇢⇡⇠', [deskDecor])
 }
 
-function makeFurniture() {
-    let chairs = palleteWithRotation('⇑⇐⇓⇒', ['cfm:oak_chair', 'cfm:spruce_chair', 'cfm:birch_chair', 'cfm:jungle_chair', 'cfm:acacia_chair', 'cfm:dark_oak_chair', 'cfm:crimson_chair', 'cfm:warped_chair', 'cfm:stripped_oak_chair', 'cfm:stripped_spruce_chair', 'cfm:stripped_birch_chair', 'cfm:stripped_jungle_chair', 'cfm:stripped_acacia_chair', 'cfm:stripped_dark_oak_chair', 'cfm:stripped_crimson_chair', 'cfm:stripped_warped_chair'].map(x => `${x}[waterlogged=false]`))
-    let tableBase = [0, 1].map(_ => ['cfm:oak_table', 'cfm:spruce_table', 'cfm:birch_table', 'cfm:jungle_table', 'cfm:acacia_table', 'cfm:dark_oak_table', 'cfm:crimson_table', 'cfm:warped_table']).flat().map(x => `${x}[waterlogged=false]`)
-    let tables = overridePlacement(singleBlockPallete('✜', tableBase))
-    makeCombinedPalette('furniture', chairs, tables)
-}
 
 module.exports = function() {
     makeBars()
@@ -118,7 +113,7 @@ module.exports = function() {
     makeSingleBlockPallete('chain', 'ߊ', ['minecraft:chain', 'additionallanterns:obsidian_chain', 'additionallanterns:basalt_chain', 'additionallanterns:andesite_chain', 'additionallanterns:diorite_chain', 'additionallanterns:granite_chain', 'additionallanterns:normal_sandstone_chain', 'additionallanterns:red_sandstone_chain', 'additionallanterns:smooth_stone_chain', 'additionallanterns:quartz_chain', 'additionallanterns:end_stone_chain', 'additionallanterns:prismarine_chain', 'additionallanterns:dark_prismarine_chain', 'additionallanterns:blackstone_chain', 'additionallanterns:normal_nether_bricks_chain', 'additionallanterns:red_nether_bricks_chain', 'additionallanterns:crimson_chain', 'additionallanterns:warped_chain', 'additionallanterns:purpur_chain', 'additionallanterns:bricks_chain', 'forbidden_arcanus:arcane_golden_chain', 'securitycraft:reinforced_chain'])
     makeSingleBlockPallete('campfire', 'ߍ', [['minecraft:soul_campfire', [4, 'minecraft:campfire'], 'occultism:spirit_campfire', 'byg:boric_campfire', 'byg:cryptic_campfire']])
     makeSingleBlockPallete('composter', 'ߛ', ['minecraft:composter'])
+    makeSingleBlockPallete('moss', 'ߎ', ['minecraft:moss_block'])
     makeDeskDecor()
     makePalleteWithRotation('trapdoor', '⥐⥏⥎⥑', ['minecraft:iron_trapdoor', 'everythingcopper:copper_trapdoor', 'supplementaries:lead_trapdoor', 'supplementaries:silver_trapdoor', 'minecraft:dark_oak_trapdoor', 'minecraft:spruce_trapdoor'].map(x=>`${x}[half=top]`))
-    makeFurniture()
 }

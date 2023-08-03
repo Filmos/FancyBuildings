@@ -54,11 +54,14 @@
     "⇈⇊⇇⇉": "Chest with loot",
     "ߍ": "Campfire",
     "ߛ": "Composter",
+    "ߎ": "Moss block",
     "⇣⇢⇡⇠": "Desk decor (66% chance for air)",
     "⥐⥏⥎⥑": "Trapdoor (upper, closed)",
 
     "⇑⇐⇓⇒": "Chair (consistent with furniture)",
-    "✜": "Table (consistent with furniture)"
+    "✜": "Table (consistent with furniture)",
+    "┬├┴┤": "Trapdoors (lower, opened, consistent with furniture)",
+    "╥╞╨╡": "Trapdoors (upper, closed, consistent with furniture)"
 },
 {
     " ": "Air",
