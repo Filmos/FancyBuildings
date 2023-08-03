@@ -39,7 +39,7 @@ let rotationBlacklist = [
 function palleteWithSuffix(suffixMap, blocks) {
     function addSuffix(block, suffix) {
         if(rotationBlacklist.includes(block) || rotationBlacklist.includes(block[1])) return block
-        let combine = b => (b + suffix).replace(/\]\s*\[/g, ',')
+        let combine = b => (b.split(/(?={)/)[0] + suffix + b.split(/(?={)/)[1]).replace(/\]\s*\[/g, ',')
         if(typeof block == 'string') return combine(block)
         return [block[0], combine(block[1])]
     }
@@ -53,6 +53,7 @@ function makePalleteWithSuffix(name, suffixMap, blocks) {makeSimplePalette(name,
 
 
 function palleteWithRotation(chars, blocks) {
+    if(chars.length != 4) throw new Error(`Chars must be 4 characters, got '${chars}' of length ${chars.length}`)
     let suffixMap = {
         [chars[0]]: '[facing=south]',
         [chars[1]]: '[facing=east]',

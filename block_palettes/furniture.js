@@ -1,4 +1,5 @@
-var { makeSingleBlockPallete, allVariants, makeSimplePalette, makePalleteWithRotation, palleteWithRotation, singleBlockPallete, makeCombinedPalette, palleteWithMultiblock, overridePlacement, splitPalette, combinedPalette } = require('./common.js')
+var { makeSingleBlockPallete, allVariants, makeSimplePalette, makePalleteWithRotation, palleteWithRotation, singleBlockPallete, makeCombinedPalette, palleteWithMultiblock, overridePlacement, splitPalette, combinedPalette, palleteWithSuffix } = require('./common.js')
+var { addAsymmetricRotation } = require('./../structure_generation/transformers_mapping.js')
 
 class PaletteMultiplier {
     constructor(paletteBase) {
@@ -35,6 +36,7 @@ function makeFurniture() {
     let worker = new PaletteMultiplier(singleBlockPallete('✜', ['cfm:oak_table', 'cfm:spruce_table', 'cfm:birch_table', 'cfm:jungle_table', 'cfm:acacia_table', 'cfm:dark_oak_table', 'cfm:crimson_table', 'cfm:warped_table'].map(x => `${x}[waterlogged=false]`)))
     worker.add(palleteWithRotation('⇑⇐⇓⇒', ['cfm:oak_chair', 'cfm:spruce_chair', 'cfm:birch_chair', 'cfm:jungle_chair', 'cfm:acacia_chair', 'cfm:dark_oak_chair', 'cfm:crimson_chair', 'cfm:warped_chair', 'cfm:stripped_oak_chair', 'cfm:stripped_spruce_chair', 'cfm:stripped_birch_chair', 'cfm:stripped_jungle_chair', 'cfm:stripped_acacia_chair', 'cfm:stripped_dark_oak_chair', 'cfm:stripped_crimson_chair', 'cfm:stripped_warped_chair'].map(x => `${x}[waterlogged=false]`)))
     worker.add(makeDoors())
+    worker.add(overridePlacement(palleteWithRotation('⍗⍈⍐⍇', ['oak', 'spruce', 'birch', 'jungle', 'acacia', 'dark_oak', 'crimson', 'warped'].map(x => `sophisticatedstorage:barrel{woodType: "${x}"}`))))
     worker.make('furniture')
 }
 
@@ -57,7 +59,43 @@ function makeDoors() {
     let trapdoors_opened = palleteWithRotation('┬├┴┤', trapdoors.map(x => `${x}[half=bottom,open=true]`))
     let trapdoors_closed = palleteWithRotation('╥╞╨╡', trapdoors.map(x => `${x}[half=top,open=false]`))
 
-    return combinedPalette(trapdoors_opened, trapdoors_closed)
+    let doors = []
+    for(let j = 1; j < base[0].length; j+=2) {for(let i = 0; i < base.length; i++) {
+            doors.push(`${base[i][j]}`)
+    }}
+    let chars = '↾↼⇃⇁↿↽⇂⇀'
+    addAsymmetricRotation(chars)
+    let suffixMap = {
+        [chars[0]]: '[facing=south,hinge=left,half=upper]',
+        [chars[1]]: '[facing=east,hinge=left,half=upper]',
+        [chars[2]]: '[facing=north,hinge=left,half=upper]',
+        [chars[3]]: '[facing=west,hinge=left,half=upper]',
+        [chars[4]]: '[facing=south,hinge=right,half=upper]',
+        [chars[5]]: '[facing=east,hinge=right,half=upper]',
+        [chars[6]]: '[facing=north,hinge=right,half=upper]',
+        [chars[7]]: '[facing=west,hinge=right,half=upper]'
+    }
+    let door_upper = palleteWithSuffix(suffixMap, doors)
+    
+    chars = '⥔⥒⥙⥗⥘⥖⥕⥓'
+    addAsymmetricRotation(chars)
+    suffixMap = {
+        [chars[0]]: '[facing=south,hinge=left,half=lower]',
+        [chars[1]]: '[facing=east,hinge=left,half=lower]',
+        [chars[2]]: '[facing=north,hinge=left,half=lower]',
+        [chars[3]]: '[facing=west,hinge=left,half=lower]',
+        [chars[4]]: '[facing=south,hinge=right,half=lower]',
+        [chars[5]]: '[facing=east,hinge=right,half=lower]',
+        [chars[6]]: '[facing=north,hinge=right,half=lower]',
+        [chars[7]]: '[facing=west,hinge=right,half=lower]'
+    }
+    let door_lower = palleteWithSuffix(suffixMap, doors)
+
+    return combinedPalette(trapdoors_opened, trapdoors_closed, door_upper, door_lower)
+}
+
+function makeStairs() {
+    let base = ['minecraft:oak_stairs', 'minecraft:spruce_stairs', 'minecraft:birch_stairs', 'minecraft:jungle_stairs', 'minecraft:acacia_stairs', 'minecraft:dark_oak_stairs', 'minecraft:crimson_stairs', 'minecraft:warped_stairs']
 }
 
 module.exports = makeFurniture

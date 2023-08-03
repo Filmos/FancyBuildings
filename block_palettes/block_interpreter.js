@@ -39,6 +39,7 @@ class WithOverridenPlacement {
             if(typeof palette[i] != "string") throw new Error("Invalid palette, expected array of strings, got "+JSON.stringify(palette))
             if(palette[i].indexOf(';') != -1) throw new Error("Invalid block for delayed placement, cannot contain ';', got "+JSON.stringify(palette[i]))
             if(palette[i].indexOf("'") != -1) throw new Error("Invalid block for delayed placement, cannot contain \"'\", got "+JSON.stringify(palette[i]))
+            palette[i] = palette[i].replace(/"/g, '\\"')
         }
         this.palette = palette
     }

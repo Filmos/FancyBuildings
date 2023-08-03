@@ -61,7 +61,9 @@
     "⇑⇐⇓⇒": "Chair (consistent with furniture)",
     "✜": "Table (consistent with furniture)",
     "┬├┴┤": "Trapdoors (lower, opened, consistent with furniture)",
-    "╥╞╨╡": "Trapdoors (upper, closed, consistent with furniture)"
+    "╥╞╨╡": "Trapdoors (upper, closed, consistent with furniture)",
+    "⇃⇁↾↼⇂⇀↿↽⥙⥗⥔⥒⥕⥓⥘⥖": "Doors (consistent with furniture)",
+    "⍗⍈⍐⍇": "Barrel (consistent with furniture)"
 },
 {
     " ": "Air",
