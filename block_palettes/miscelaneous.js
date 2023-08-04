@@ -89,6 +89,29 @@ function makeDeskDecor() {
     makePalleteWithRotation('desk_decor', '⇣⇢⇡⇠', [deskDecor])
 }
 
+function makeResourceBlocks() {
+    let base = [
+        ['thermal:fire_tnt', 'thermal:ice_tnt', 'thermal:lightning_tnt', 'thermal:phyto_tnt', 'thermal:ender_tnt', 'thermal:glowstone_tnt', 'thermal:redstone_tnt', 'thermal:slime_tnt'],
+        ['minecraft:coal_ore', 'minecraft:iron_ore', 'minecraft:copper_ore', 'minecraft:gold_ore', 'minecraft:redstone_ore', 'minecraft:lapis_ore', 'minecraft:diamond_ore', 'minecraft:emerald_ore', 'alltheores:aluminum_ore', 'alltheores:nickel_ore', 'alltheores:lead_ore', 'alltheores:osmium_ore', 'alltheores:platinum_ore', 'alltheores:silver_ore', 'alltheores:tin_ore', 'alltheores:zinc_ore', 'alltheores:iridium_ore', 'securitycraft:iron_mine', 'securitycraft:gold_mine', 'securitycraft:emerald_mine', 'securitycraft:diamond_mine', 'ae2:quartz_ore', 'mysticalagriculture:prosperity_ore', 'mysticalagriculture:inferium_ore'],
+        ['minecraft:deepslate_coal_ore', 'minecraft:deepslate_iron_ore', 'minecraft:deepslate_copper_ore', 'minecraft:deepslate_gold_ore', 'minecraft:deepslate_redstone_ore', 'minecraft:deepslate_emerald_ore', 'minecraft:deepslate_lapis_ore', 'minecraft:deepslate_diamond_ore', 'alltheores:aluminum_slate_ore', 'alltheores:lead_slate_ore', 'alltheores:nickel_slate_ore', 'alltheores:osmium_slate_ore', 'alltheores:platinum_slate_ore', 'alltheores:silver_slate_ore', 'alltheores:tin_slate_ore', 'alltheores:uranium_slate_ore', 'alltheores:zinc_slate_ore', 'alltheores:iridium_slate_ore', 'ae2:deepslate_quartz_ore', 'mysticalagriculture:deepslate_prosperity_ore', 'mysticalagriculture:deepslate_inferium_ore', 'securitycraft:deepslate_iron_mine', 'securitycraft:deepslate_gold_mine', 'securitycraft:deepslate_emerald_mine', 'securitycraft:deepslate_diamond_mine'],
+        ['minecraft:cobblestone', 'minecraft:netherrack', 'minecraft:end_stone'],
+        ['minecraft:stripped_oak_wood', 'minecraft:stripped_spruce_wood', 'minecraft:stripped_birch_wood', 'minecraft:stripped_jungle_wood', 'minecraft:stripped_acacia_wood', 'minecraft:stripped_dark_oak_wood', 'blue_skies:stripped_bluebright_wood', 'blue_skies:stripped_starlit_wood', 'blue_skies:stripped_frostbright_wood', 'blue_skies:stripped_lunar_wood', 'blue_skies:stripped_dusk_wood', 'blue_skies:stripped_maple_wood', 'blue_skies:stripped_cherry_wood', 'evilcraft:undead_wood_stripped', 'forbidden_arcanus:stripped_cherrywood', 'forbidden_arcanus:stripped_mysterywood', 'hexerei:stripped_mahogany_wood', 'hexerei:stripped_willow_wood', 'byg:stripped_blue_enchanted_wood', 'byg:stripped_bulbis_wood', 'byg:stripped_palo_verde_wood', 'twilightforest:stripped_mining_wood', 'byg:stripped_jacaranda_wood', 'byg:stripped_redwood_wood', 'twilightforest:stripped_twilight_oak_wood', 'twilightforest:stripped_canopy_wood', 'twilightforest:stripped_mangrove_wood', 'twilightforest:stripped_dark_wood', 'twilightforest:stripped_time_wood', 'twilightforest:stripped_transformation_wood'],
+        ['supplementaries:soap_block'],
+        ['minecraft:hay_block', 'farmersdelight:rice_bale', 'farmersdelight:straw_bale', 'supplementaries:flax_block', 'thermal:barley_block', 'thermal:flax_block'],
+        ['minecolonies:composted_dirt', 'farmersdelight:organic_compost', 'farmersdelight:rich_soil'],
+        ['farmersdelight:carrot_crate', 'farmersdelight:potato_crate', 'farmersdelight:beetroot_crate', 'farmersdelight:cabbage_crate', 'farmersdelight:tomato_crate', 'farmersdelight:onion_crate', 'thermal:corn_block', 'thermal:onion_block', 'thermal:radish_block', 'thermal:sadiroot_block', 'thermal:spinach_block', 'thermal:bell_pepper_block', 'thermal:eggplant_block', 'thermal:green_bean_block', 'thermal:hops_block', 'thermal:strawberry_block', 'thermal:tomato_block', 'thermal:apple_block', 'thermal:carrot_block', 'thermal:potato_block', 'thermal:beetroot_block'],
+        ['thermal:rice_block', 'thermal:peanut_block', 'thermal:coffee_block', 'thermal:tea_block'],
+        ['chipped:barrel_14', 'chipped:barrel_15', 'chipped:barrel_6', 'chipped:barrel_7'].reduce((a, b) => a.concat(["east", "west", "north", "south", "up"].map(x=>`${b}[facing=${x}]`)), []),
+        ['botania:white_petal_block', 'botania:orange_petal_block', 'botania:magenta_petal_block', 'botania:light_blue_petal_block', 'botania:yellow_petal_block', 'botania:lime_petal_block', 'botania:pink_petal_block', 'botania:gray_petal_block', 'botania:light_gray_petal_block', 'botania:cyan_petal_block', 'botania:purple_petal_block', 'botania:blue_petal_block', 'botania:brown_petal_block', 'botania:green_petal_block', 'botania:red_petal_block', 'botania:black_petal_block', 'byg:white_petal_block', 'byg:blue_petal_block', 'byg:light_blue_petal_block', 'byg:purple_petal_block', 'byg:red_petal_block', 'byg:yellow_petal_block']
+    ]
+
+    makeSimplePalette('resource_block', {
+        chars: ['᙭','᙮'],
+        blocks: base.map(x => {
+            return [x, [...x, [x.length*2, 'minecraft:air']]]
+        })
+    })
+}
 
 module.exports = function() {
     makeBars()
@@ -116,4 +139,8 @@ module.exports = function() {
     makeSingleBlockPallete('moss', 'ߎ', ['minecraft:moss_block'])
     makeDeskDecor()
     makePalleteWithRotation('trapdoor', '⥐⥏⥎⥑', ['minecraft:iron_trapdoor', 'everythingcopper:copper_trapdoor', 'supplementaries:lead_trapdoor', 'supplementaries:silver_trapdoor', 'minecraft:dark_oak_trapdoor', 'minecraft:spruce_trapdoor'].map(x=>`${x}[half=top]`))
+    makeSimplePalette('mirror', overridePlacement(palleteWithRotation('ᑭᓇᑯᓀ', ['minecraft:light_gray_wall_banner{Patterns: [{Pattern: "dls", Color: 0}, {Pattern: "gru", Color: 3}, {Pattern: "gra", Color: 0}, {Pattern: "bo", Color: 15}]}'])))
+    makeResourceBlocks()
+    makePalleteWithRotation('smart_storage', 'ᕕᕙᕓᕗ', ['toms_storage:ts.crafting_terminal', 'toms_storage:ts.storage_terminal'].map(x=>`${x}[pos=down]`))
+    makeSingleBlockPallete('smart_storage_connector', 'ᕔ', ['toms_storage:ts.inventory_connector'])
 }

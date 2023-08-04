@@ -39,7 +39,7 @@ let rotationBlacklist = [
 function palleteWithSuffix(suffixMap, blocks) {
     function addSuffix(block, suffix) {
         if(rotationBlacklist.includes(block) || rotationBlacklist.includes(block[1])) return block
-        let combine = b => (b.split(/(?={)/)[0] + suffix + b.split(/(?={)/)[1]).replace(/\]\s*\[/g, ',')
+        let combine = b => (b.split(/(?={)/)[0] + suffix + b.split(/(?={)/).slice(1).join("")).replace(/\]\s*\[/g, ',')
         if(typeof block == 'string') return combine(block)
         return [block[0], combine(block[1])]
     }

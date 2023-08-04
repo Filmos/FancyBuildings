@@ -37,6 +37,9 @@ function makeFurniture() {
     worker.add(palleteWithRotation('⇑⇐⇓⇒', ['cfm:oak_chair', 'cfm:spruce_chair', 'cfm:birch_chair', 'cfm:jungle_chair', 'cfm:acacia_chair', 'cfm:dark_oak_chair', 'cfm:crimson_chair', 'cfm:warped_chair', 'cfm:stripped_oak_chair', 'cfm:stripped_spruce_chair', 'cfm:stripped_birch_chair', 'cfm:stripped_jungle_chair', 'cfm:stripped_acacia_chair', 'cfm:stripped_dark_oak_chair', 'cfm:stripped_crimson_chair', 'cfm:stripped_warped_chair'].map(x => `${x}[waterlogged=false]`)))
     worker.add(makeDoors())
     worker.add(overridePlacement(palleteWithRotation('⍗⍈⍐⍇', ['oak', 'spruce', 'birch', 'jungle', 'acacia', 'dark_oak', 'crimson', 'warped'].map(x => `sophisticatedstorage:barrel{woodType: "${x}"}`))))
+    worker.add(overridePlacement(palleteWithRotation('ᐱᐸᐯᐳ', ['cfm:oak_desk', 'cfm:spruce_desk', 'cfm:birch_desk', 'cfm:jungle_desk', 'cfm:acacia_desk', 'cfm:dark_oak_desk', 'cfm:crimson_desk', 'cfm:warped_desk'].map(x => `${x}[waterlogged=false]`))))
+    worker.add(palleteWithRotation('ᐽᑅᐻᑁ', ['cfm:oak_bedside_cabinet', 'cfm:spruce_bedside_cabinet', 'cfm:birch_bedside_cabinet', 'cfm:jungle_bedside_cabinet', 'cfm:acacia_bedside_cabinet', 'cfm:dark_oak_bedside_cabinet', 'cfm:crimson_bedside_cabinet', 'cfm:warped_bedside_cabinet'].map(x => `${x}[waterlogged=false]`)))
+    worker.add(makeStairs())
     worker.make('furniture')
 }
 
@@ -96,6 +99,9 @@ function makeDoors() {
 
 function makeStairs() {
     let base = ['minecraft:oak_stairs', 'minecraft:spruce_stairs', 'minecraft:birch_stairs', 'minecraft:jungle_stairs', 'minecraft:acacia_stairs', 'minecraft:dark_oak_stairs', 'minecraft:crimson_stairs', 'minecraft:warped_stairs']
+    let stairsBottom = palleteWithRotation('ᙎᙐᙏᙓ', base.map(x => `${x}[half=bottom]`))
+    let stairsTop = palleteWithRotation('ᙡᙣᙢᙦ', base.map(x => `${x}[half=top]`))
+    return combinedPalette(stairsBottom, stairsTop)
 }
 
 module.exports = makeFurniture
