@@ -34,19 +34,20 @@ function paletteToJson(data) {
 class WithOverridenPlacement {
     constructor(palette) {
         if(typeof palette == "string") palette = [palette]
-        if(!Array.isArray(palette) || palette.length == 0) throw new Error("Invalid palette, expected array of strings, got "+JSON.stringify(palette))
+        if(!Array.isArray(palette) || palette.length == 0) throw new Error("Invalid palette, expected array of strings or [weight, string], got "+JSON.stringify(palette))
         for(let i=0;i<palette.length;i++) {
-            if(typeof palette[i] != "string") throw new Error("Invalid palette, expected array of strings, got "+JSON.stringify(palette))
-            if(palette[i].indexOf(';') != -1) throw new Error("Invalid block for delayed placement, cannot contain ';', got "+JSON.stringify(palette[i]))
-            if(palette[i].indexOf("'") != -1) throw new Error("Invalid block for delayed placement, cannot contain \"'\", got "+JSON.stringify(palette[i]))
-            palette[i] = palette[i].replace(/"/g, '\\"')
+            if(typeof palette[i] != "string" && typeof palette[i][1] != "string") throw new Error("Invalid palette, expected array of strings or [weight, string], got "+JSON.stringify(palette))
+            if(typeof palette[i] == "string") palette[i] = [1, palette[i]]
+            if(palette[i][1].indexOf(';') != -1) throw new Error("Invalid block for delayed placement, cannot contain ';', got "+JSON.stringify(palette[i][1]))
+            if(palette[i][1].indexOf("'") != -1) throw new Error("Invalid block for delayed placement, cannot contain \"'\", got "+JSON.stringify(palette[i][1]))
+            palette[i][1] = palette[i][1].replace(/"/g, '\\"')
         }
         this.palette = palette
     }
     asJson() {
         return {
             "block": "minecraft:repeating_command_block",
-            "tag": {"auto": true, "Command": `setblock ~ ~ ~ minecraft:command_block{auto: true, Command: "setblock_delayed ~ ~ ~ '${this.palette.join(';')}'"}`}
+            "tag": {"auto": true, "Command": `setblock ~ ~ ~ minecraft:command_block{auto: true, Command: "setblock_delayed ~ ~ ~ '${this.palette.flat().join(';')}'"}`}
         }
     }
 }
