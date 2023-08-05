@@ -91,6 +91,42 @@ function splitPalette(palette) {
     }]))
 }
 
+function combineVariants(...palettes) {
+    for(let pal of palettes) {
+        if(!pal.chars) throw new Error(`Palette '${p.name}' does not have a 'chars' property`)
+        for(let char of pal.chars) {
+            if(!palettes.every(p => p.chars.includes(char))) throw new Error(`Char '${char}' not present in all palettes`)
+        }
+    }
+
+    let result = JSON.parse(JSON.stringify(palettes[0]))
+    for(let pal of palettes.slice(1)) {
+        for(let variant of pal.blocks) {
+            let reordered = []
+            for(let char of result.chars) {
+                let index = pal.chars.indexOf(char)
+                reordered.push(variant[index])
+            }
+            result.blocks.push(reordered)
+        }
+    }
+    return result
+}
+
+function addToAllVariants(base, addition) {
+    if(addition.blocks.length != 1) throw new Error(`Addition must have exactly one variant, got ${addition.blocks.length}`)
+    let result = JSON.parse(JSON.stringify(base))
+    for(let c in addition.chars) {
+        let char = addition.chars[c]
+        if(!result.chars.includes(char)) throw new Error(`Char '${char}' not present in base`)
+        let index = result.chars.indexOf(char)
+
+        for(let variant of result.blocks)
+            variant[index] = variant[index].concat(addition.blocks[0][c])
+    }
+    return result
+}
+
 function overridePlacement(pallette) {
     return {
         chars: pallette.chars,
@@ -106,5 +142,6 @@ module.exports = {
     palleteWithRotation, makePalleteWithRotation,
     overridePlacement,
     combinedPalette, makeCombinedPalette, 
-    splitPalette
+    splitPalette,
+    combineVariants, addToAllVariants
 } 

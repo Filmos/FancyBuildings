@@ -1,4 +1,4 @@
-var { makeSingleBlockPallete, allVariants, makeSimplePalette, makePalleteWithRotation, palleteWithRotation, singleBlockPallete, makeCombinedPalette, palleteWithMultiblock, overridePlacement, splitPalette } = require('./common.js')
+var { makeSingleBlockPallete, allVariants, makeSimplePalette, makePalleteWithRotation, palleteWithRotation, singleBlockPallete, makeCombinedPalette, overridePlacement, splitPalette, combinedPalette, combineVariants, addToAllVariants } = require('./common.js')
 
 function makeBars() {
     makeSingleBlockPallete('bars', ':', [
@@ -18,7 +18,7 @@ function makeBars() {
 function makeCeilingDecorations() {
     let palletes = ['minecraft:lantern', 'minecraft:soul_lantern', 'chipped:lantern_4', 'chipped:soul_lantern_3', 'chipped:lantern_1', 'chipped:soul_lantern_1', 'chipped:lantern_2', 'chipped:soul_lantern_2', 'supplementaries:brass_lantern', 'supplementaries:crimson_lantern', 'supplementaries:silver_lantern', 'supplementaries:lead_lantern', 'byg:glowstone_lantern', 'byg:therium_lantern', 'byg:cryptic_lantern']
     palletes = palletes.map(b => b+'[hanging=true]')
-    palletes = palletes.concat(['torchmaster:dreadlamp', 'minecraft:bell[attachment=ceiling]', 'laserio:laser_connector[facing=up]', 'supplementaries:sack', 'minecraft:chain', 'mcwlights:white_ceiling_light', 'mcwlights:light_gray_ceiling_light', 'mcwlights:gray_ceiling_light', 'mcwlights:black_ceiling_light', 'utilitix:experience_crystal[facing=down]', 'simplylight:illuminant_panel[facing=down]', 'forbidden_arcanus:arcane_golden_chain', 'additionallanterns:obsidian_chain', 'byg:witch_hazel_blossom', 'minecraft:spore_blossom'])
+    palletes = palletes.concat(['torchmaster:dreadlamp', 'minecraft:bell[attachment=ceiling]', 'laserio:laser_connector[facing=up]', 'supplementaries:sack', 'mcwlights:white_ceiling_light', 'mcwlights:light_gray_ceiling_light', 'mcwlights:gray_ceiling_light', 'mcwlights:black_ceiling_light', 'utilitix:experience_crystal[facing=down]', 'simplylight:illuminant_panel[facing=down]', 'byg:witch_hazel_blossom', 'minecraft:spore_blossom'])
 
     let candles = ['supplementaries:candle_holder', 'supplementaries:candle_holder_yellow', 'supplementaries:candle_holder_orange', 'supplementaries:candle_holder_gray', 'supplementaries:candle_holder_black']
     for(let candle of candles) {
@@ -26,7 +26,7 @@ function makeCeilingDecorations() {
             palletes.push([1/candles.length/2, `${candle}[candles=${i},face=ceiling]`])
     }
 
-    makeSingleBlockPallete('ceiling_decor', '^', palletes)
+    makeSingleBlockPallete('ceiling_decor', '^', [palletes])
 }
 
 function makeFloralDecorations() {
@@ -114,6 +114,36 @@ function makeResourceBlocks() {
     })
 }
 
+function makeKitchen() {
+    const colors = ['white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black']
+    let modern = combinedPalette(
+        palleteWithRotation('ᑧᑩᑨᑪ', colors.map(x => `cfm:${x}_kitchen_sink`)),
+        palleteWithRotation('ᑌᑐᑎᑕ', colors.map(x => [`cfm:${x}_kitchen_drawer`, `cfm:${x}_kitchen_counter`]))
+    )
+    modern = addToAllVariants(modern, palleteWithRotation('ᑨᑪᑧᑩ', ['cookingforblockheads:oven']))
+    let oldStyle = combinedPalette(
+        palleteWithRotation('ᑨᑪᑧᑩ', colors.map(x => ['farmersdelight:stove',  ...['cookingforblockheads:cooking_table', 'cookingforblockheads:sink'].map(y => `${y}[has_color=true,color=${x}]`)])),
+        palleteWithRotation('ᑎᑕᑌᑐ', colors.map(x => `cookingforblockheads:counter[has_color=true,color=${x}]`))
+    )
+    makeSimplePalette("kitchen_counter", overridePlacement(combineVariants(modern, oldStyle)))
+
+    let utils = ['cookingforblockheads:milk_jar', 'cookingforblockheads:fruit_basket', 'cookingforblockheads:toaster', 'cookingforblockheads:cow_jar', 'farmersdelight:cooking_pot', 'farmersdelight:skillet'].reduce((full, cur) => full.concat(['south', 'east', 'west', 'north'].map(x => `${cur}[facing=${x}]`)), [])
+    utils.push([utils.length*2, 'minecraft:air'])
+    makeSingleBlockPallete('kitchen_top', 'ᐝ', [utils])
+
+    let fridge = combinedPalette(
+        combineVariants(
+            palleteWithRotation('⮙⮘⮛⮚', ['cfm:freezer_light', 'cfm:freezer_dark']),
+            palleteWithRotation('⮛⮚⮙⮘', ['cookingforblockheads:fridge'])
+        ),
+        combineVariants(
+            palleteWithRotation('⮝⮜⮟⮞', ['cfm:fridge_light', 'cfm:fridge_dark']),
+            palleteWithRotation('⮟⮞⮝⮜', ['cookingforblockheads:fridge'])
+        )
+    )
+    makeSimplePalette("kitchen_fridge", fridge)
+}
+
 module.exports = function() {
     makeBars()
     makeCeilingDecorations()
@@ -144,4 +174,5 @@ module.exports = function() {
     makeResourceBlocks()
     makePalleteWithRotation('smart_storage', 'ᕕᕙᕓᕗ', ['toms_storage:ts.crafting_terminal', 'toms_storage:ts.storage_terminal'].map(x=>`${x}[pos=down]`))
     makeSingleBlockPallete('smart_storage_connector', 'ᕔ', ['toms_storage:ts.inventory_connector'])
+    makeKitchen()
 }
