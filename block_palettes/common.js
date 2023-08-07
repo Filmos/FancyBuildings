@@ -37,6 +37,7 @@ let rotationBlacklist = [
 ]
 
 function palleteWithSuffix(suffixMap, blocks) {
+    if(!Array.isArray(blocks)) throw new Error(`Blocks must be an array, got ${blocks}`)
     function addSuffix(block, suffix) {
         if(rotationBlacklist.includes(block) || rotationBlacklist.includes(block[1])) return block
         let combine = b => (b.split(/(?={)/)[0] + suffix + b.split(/(?={)/).slice(1).join("")).replace(/\]\s*\[/g, ',')
@@ -134,13 +135,21 @@ function overridePlacement(pallette) {
     }
 }
 
+function overridePlacementWithFunction(pallette, func) {
+    customCode += (""+func).replace(/function\s+[^(]+\(/, `"${func.name}": function(`)+",\n"
+    return {
+        chars: pallette.chars,
+        blocks: pallette.blocks.map(variant => variant.map(char => new WithOverridenPlacement(char, func.name)))
+    }
+}
+
 module.exports = {
     allVariants, 
     makePalette, makeSimplePalette, 
     singleBlockPallete, makeSingleBlockPallete,
     palleteWithSuffix, makePalleteWithSuffix,
     palleteWithRotation, makePalleteWithRotation,
-    overridePlacement,
+    overridePlacement, overridePlacementWithFunction,
     combinedPalette, makeCombinedPalette, 
     splitPalette,
     combineVariants, addToAllVariants

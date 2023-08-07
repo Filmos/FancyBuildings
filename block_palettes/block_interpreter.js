@@ -32,7 +32,7 @@ function paletteToJson(data) {
 }
 
 class WithOverridenPlacement {
-    constructor(palette) {
+    constructor(palette, subFunc="default") {
         if(typeof palette == "string") palette = [palette]
         if(!Array.isArray(palette) || palette.length == 0) throw new Error("Invalid palette, expected array of strings or [weight, string], got "+JSON.stringify(palette))
         for(let i=0;i<palette.length;i++) {
@@ -43,11 +43,12 @@ class WithOverridenPlacement {
             palette[i][1] = palette[i][1].replace(/"/g, '\\"')
         }
         this.palette = palette
+        this.subFunc = subFunc
     }
     asJson() {
         return {
             "block": "minecraft:repeating_command_block",
-            "tag": {"auto": true, "Command": `setblock ~ ~ ~ minecraft:command_block{auto: true, Command: "setblock_delayed ~ ~ ~ '${this.palette.flat().join(';')}'"}`}
+            "tag": {"auto": true, "Command": `setblock ~ ~ ~ minecraft:command_block{auto: true, Command: "setblock_delayed ~ ~ ~ '${this.palette.flat().join(';')}' ${this.subFunc}"}`}
         }
     }
 }

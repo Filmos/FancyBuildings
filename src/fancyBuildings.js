@@ -5,6 +5,7 @@ onEvent("command.registry", event => {
             .requires(src => src.hasPermission(2))
             .then(Commands.argument('pos', Arguments.BLOCK_POS_LOADED.create(event))
                 .then(Commands.argument('block', Arguments.STRING.create(event))
+                    .then(Commands.argument('subFunc', Arguments.STRING.create(event))
                     .executes(ctx => {
                         const blockArgs = Arguments.STRING.getResult(ctx, "block").split(";")
                         let i = 0; let weights = blockArgs.filter(el => {i+=1; return i%2==1}).map(el => parseFloat(el))
@@ -14,16 +15,22 @@ onEvent("command.registry", event => {
                         block = fillInVars(block)
 
                         const pos = Arguments.BLOCK_POS_LOADED.getResult(ctx, "pos")
-                        const command = `execute in ${ctx.source.level.dimension().location()} run setblock ${pos.x} ${pos.y} ${pos.z} ${block}`
+                        const command = `execute in ${ctx.source.level.dimension().location()} positioned ${pos.x} ${pos.y} ${pos.z} run `
                         console.log(command)
 
+                        const subFunc = Arguments.STRING.getResult(ctx, "subFunc")
+                        console.log(subFunc)
                         const level = ctx.source.level.asKJS()
-                        level.getServer().schedule(200, {server: level.getServer(), command: command}, function (callback) {
-                            callback.data.server.runCommandSilent(callback.data.command)
+                        level.getServer().schedule(200, {server: level.getServer(), command: command, subFunc: subFunc, block: block}, function (callback) {
+                            let run = (cmd) => {
+                                console.log(cmd)
+                                callback.data.server.runCommandSilent(callback.data.command+cmd)
+                            }
+                            subFunctions[callback.data.subFunc](callback.data.block, run)
                         })
                         return 1
                     })
-                ))
+                )))
     )
 })
 
@@ -38,4 +45,9 @@ function fillInVars(block) {
     const colors = ['white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black']
     block = block.replace('%color%', colors[Math.floor(Math.random()*colors.length)])
     return block
+}
+
+var subFunctions = {
+    "default": function(block, run) {run(`setblock ~ ~ ~ ${block}`)},
+    ︙customCode︙
 }

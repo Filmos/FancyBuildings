@@ -6,6 +6,7 @@ out += '/data/lostcities/lostcities'
 
 const { allVariants } = require('./block_palettes/common.js')
 const { generatePalettes } = require('./block_palettes/index.js')
+customCode = ""
 
 function sanitizeName(name) {
     return name.replace(/[: _"'{}\][]/g, '_').toLowerCase()
@@ -51,6 +52,7 @@ function sanitizeName(name) {
 
 generatePalettes();
 eval($$.create('src/style.json', out + '/styles/standard.json'));
+eval($$.create('src/fancyBuildings.js', 'dist/server_scripts/fancyBuildings.js'));
 
 (function make_floor_structures() {require('./structure_generation/main.js')})();
 
