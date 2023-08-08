@@ -31,6 +31,9 @@ class InnerWallWorker {
         this._removeTwoTwoWalls(this.floor)
         // let mergeTime = Date.now();
         this._cleanUp(this.floor, this.initalFloor)
+
+        this._checkMap(this.floor);
+
         this._placeDoors(this.floor)
         // let placeTime = Date.now();
         this._updateStructure(this.structure, this.projection)
@@ -118,20 +121,14 @@ class InnerWallWorker {
     _generateRooms(m) {
         let quicksaveMap = this._get(m)
         let rooms = [];
-        for (let tries = 0; tries < 10; tries++) {
+        let maxTries = 2;
+        for (let tries = 0; tries < maxTries; tries++) {
             rooms.length = 0;
-            for (let times = 0; times < 10; times++) {
-                this._tryPlaceRoom(6, 6, m, rooms)
-                this._tryPlaceRoom(5, 6, m, rooms)
-                this._tryPlaceRoom(5, 6, m, rooms)
-                this._tryPlaceRoom(7, 6, m, rooms)
-                this._tryPlaceRoom(5, 5, m, rooms)
-                this._tryPlaceRoom(5, 5, m, rooms)
-                this._tryPlaceRoom(5, 4, m, rooms)
-                this._tryPlaceRoom(4, 4, m, rooms)
+            for (let times = 0; times < 30; times++) {
+                this._tryPlaceRoom(Math.floor(4 + Math.random() * (times * .8 + 1)), Math.floor(4 + Math.random() * (times * .8 + 1)), m, rooms);
             }
             if (rooms.length > 3) break;
-            else this._set(quicksaveMap, m);
+            else if (tries < maxTries - 1) this._set(quicksaveMap, m);
         }
     }
 
@@ -254,9 +251,9 @@ class InnerWallWorker {
                 }
             }
         }
-        if (floorArea > 120) targetRoomCount = 5;
-        else if (floorArea > 100) targetRoomCount = 4;
-        else targetRoomCount = 3;
+        if (floorArea > 120) targetRoomCount = 4;
+        else if (floorArea > 100) targetRoomCount = 3;
+        else targetRoomCount = 2;
         if (Math.random() > .7) targetRoomCount--;
         if (Math.random() > .8) targetRoomCount++;
 
@@ -313,6 +310,13 @@ class InnerWallWorker {
         }
     }
 
+    _checkMap(floor){
+        let rooms = this._getAreas(floor, function (x, y, floor) {
+            return floor[y][x] == Block.Empty || floor[y][x] == Block.MustEmpty
+        })
+        if (rooms.areaSizes.length == 1) this.fail = true;
+    }
+
     _placeDoors(floor) {
         for (let tries = 0; tries < 6; tries++) {
             let rooms = this._getAreas(floor, function (x, y, floor) {
@@ -358,24 +362,26 @@ class InnerWallWorker {
                 }
             }
             doorPlacements = weightedDoorPlacements
-            if (doorPlacements.length > 1) {
-                doorPlacements.sort((a, b) => b[3] - a[3])
-                doorPlacements.length = Math.floor(doorPlacements.length * .8)
-            }
-            let doorPlacement = doorPlacements[Math.floor(Math.random() * doorPlacements.length)]
+            if (doorPlacements.length > 0) {
+                if (doorPlacements.length > 1) {
+                    doorPlacements.sort((a, b) => b[3] - a[3])
+                    doorPlacements.length = Math.floor(doorPlacements.length * .8)
+                }
+                let doorPlacement = doorPlacements[Math.floor(Math.random() * doorPlacements.length)]
 
-            if (doorPlacement[2] != 0) {
-                let x = doorPlacement[0]
-                let y = doorPlacement[1]
-                floor[y][x] = Block.MustEmpty
-                floor[y][x - 1] = Block.MustEmpty
-                floor[y][x + 1] = Block.MustEmpty
-            } else {
-                let x = doorPlacement[0]
-                let y = doorPlacement[1]
-                floor[y][x] = Block.MustEmpty
-                floor[y - 1][x] = Block.MustEmpty
-                floor[y + 1][x] = Block.MustEmpty
+                if (doorPlacement[2] != 0) {
+                    let x = doorPlacement[0]
+                    let y = doorPlacement[1]
+                    floor[y][x] = Block.MustEmpty
+                    floor[y][x - 1] = Block.MustEmpty
+                    floor[y][x + 1] = Block.MustEmpty
+                } else {
+                    let x = doorPlacement[0]
+                    let y = doorPlacement[1]
+                    floor[y][x] = Block.MustEmpty
+                    floor[y - 1][x] = Block.MustEmpty
+                    floor[y + 1][x] = Block.MustEmpty
+                }
             }
         }
     }
@@ -395,25 +401,25 @@ class InnerWallWorker {
 
     _getRoomPlacements(w, h, m) {
         let placements = []; // [x, y, rotation]
-        for (let i = 0; i <= m.length - h; i++) {
-            for (let j = 0; j <= m[i].length - w; j++) {
+        for (let y = 0; y <= m.length - h; y++) {
+            for (let x = 0; x <= m[y].length - w; x++) {
 
                 let wrong = false;
                 let emptyCount = 0;
                 let wallsToCreate = 0
-                for (let ii = 0; ii < h; ii++) {
-                    for (let jj = 0; jj < w; jj++) {
-                        if (ii == 0 || ii == h - 1 || jj == 0 || jj == w - 1) {
-                            if (m[i + ii][j + jj] == Block.MustEmpty || m[i + ii][j + jj] == Block.OutOfBounds) {
+                for (let yy = 0; yy < h; yy++) {
+                    for (let xx = 0; xx < w; xx++) {
+                        if (yy == 0 || yy == h - 1 || xx == 0 || xx == w - 1) {
+                            if (m[y + yy][x + xx] == Block.MustEmpty || m[y + yy][x + xx] == Block.OutOfBounds) {
                                 wrong = true;
-                            } else if (m[i + ii][j + jj] == Block.Empty) {
+                            } else if (m[y + yy][x + xx] == Block.Empty) {
                                 wallsToCreate++;
                             }
                         } else {
-                            if (m[i + ii][j + jj] == Block.Wall || m[i + ii][j + jj] == Block.MustWall || m[i + ii][j + jj] == Block.OutOfBounds) {
+                            if (m[y + yy][x + xx] == Block.Wall || m[y + yy][x + xx] == Block.MustWall || m[y + yy][x + xx] == Block.OutOfBounds) {
                                 wrong = true;
                             } else {
-                                if (m[i + ii][j + jj] == Block.Empty) {
+                                if (m[y + yy][x + xx] == Block.Empty) {
                                     emptyCount++;
                                 }
                             }
@@ -422,7 +428,7 @@ class InnerWallWorker {
                 }
 
                 if (!wrong && wallsToCreate + emptyCount > 0) {
-                    placements.push([j, i, w, h, wallsToCreate])
+                    placements.push([x, y, w, h, wallsToCreate])
                 }
             }
         }
@@ -494,26 +500,24 @@ class InnerWallWorker {
     _tryPlaceRoom(w, h, m, rs) {
         let placements = this._getRoomPlacements(w, h, m)
         if (placements.length > 0) {
-
-            if (placements.length > 1) {
-                placements.sort((a, b) => -(a[4] - b[4]))
-                placements.length = Math.floor(placements.length * .8)
-            }
-
             let startCorridorCount = this._corridorTest(m)
             let sav = this._get(m)
 
-            for (let tries = 0; tries < 20; tries++) {
-                let placement = placements[Math.floor(Math.random() * placements.length)]
+            let realPlacements = []
+            for (let i = 0; i < placements.length; i++) {
+                let placement = placements[i]
                 this._placeRect(placement[0], placement[1], placement[0] + placement[2] - 1, placement[1] + placement[3] - 1, m);
 
-                if (this._corridorTest(m) > startCorridorCount) {
-                    this._set(sav, m)
-                    startCorridorCount = this._corridorTest(m)
-                } else {
-                    rs?.push(placement)
-                    return;
+                if (this._corridorTest(m) <= startCorridorCount) {
+                    realPlacements.push(placement)
                 }
+                this._set(sav, m)
+            }
+            if (realPlacements.length > 0) {
+                let placement = realPlacements[Math.floor(Math.random() * realPlacements.length)]
+                this._placeRect(placement[0], placement[1], placement[0] + placement[2] - 1, placement[1] + placement[3] - 1, m);
+
+                rs?.push(placement)
             }
         }
     }
