@@ -144,6 +144,15 @@ function makeKitchen() {
     makeSimplePalette("kitchen_fridge", fridge)
 }
 
+function makeBeds() {
+    const colors = ['white', 'orange', 'magenta', 'light_blue', 'yellow', 'lime', 'pink', 'gray', 'light_gray', 'cyan', 'purple', 'blue', 'brown', 'green', 'red', 'black']
+    makeCombinedPalette(
+        'bed',
+        overridePlacement(palleteWithRotation('ᐃᐊᐁᐅ', colors.map(x => `minecraft:${x}_bed[part=foot]`))),
+        overridePlacement(palleteWithRotation('ᐬᐮᐫᐭ', colors.map(x => `minecraft:${x}_bed[part=head]`)))
+    )
+}
+
 module.exports = function() {
     makeBars()
     makeCeilingDecorations()
@@ -175,4 +184,13 @@ module.exports = function() {
     makePalleteWithRotation('smart_storage', 'ᕕᕙᕓᕗ', ['toms_storage:ts.crafting_terminal', 'toms_storage:ts.storage_terminal'].map(x=>`${x}[pos=down]`))
     makeSingleBlockPallete('smart_storage_connector', 'ᕔ', ['toms_storage:ts.inventory_connector'])
     makeKitchen()
+    makeBeds()
+    makePalleteWithRotation('down_closed_trapdoor', '╤╟╧╢', ['mcwtrpdoors:oak_cottage_trapdoor', 'mcwtrpdoors:oak_four_panel_trapdoor', 'mcwtrpdoors:oak_barn_trapdoor'].map(x => `${x}[half=bottom,open=false]`))
+    makePalleteWithRotation('ladder', '⟱⭆⟰⭅', [
+        ['minecraft:ladder', [0.5, 'chipped:ladder_1']], 
+        ['chipped:ladder_6', [0.5, 'chipped:ladder_2']], 
+        ['chipped:ladder_8', [0.5, 'chipped:ladder_3']], 
+        ['chipped:ladder_9'], 
+        ['chipped:ladder_10']
+    ])
 }

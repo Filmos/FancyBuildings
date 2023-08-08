@@ -63,12 +63,15 @@
     "✜": "Table (consistent with furniture)",
     "┬├┴┤": "Trapdoors (lower, opened, consistent with furniture)",
     "╥╞╨╡": "Trapdoors (upper, closed, consistent with furniture)",
+    "╤╟╧╢": "Trapdoors (lower, closed, oak)",
     "⇃⇁↾↼⇂⇀↿↽⥙⥗⥔⥒⥕⥓⥘⥖": "Doors (consistent with furniture)",
     "⍗⍈⍐⍇": "Barrel (consistent with furniture)",
     "ᐱᐸᐯᐳ": "Desk (consistent with furniture)",
     "ᐽᑅᐻᑁ": "Bedside cabinet (consistent with furniture)",
     "ᙎᙐᙏᙓ": "Stairs bottom (consistent with furniture)",
     "ᙡᙣᙢᙦ": "Stairs top (consistent with furniture)",
+    "ᙚ": "Desk (consistent with furniture)",
+    "ᖲᖰ": "Slab (consistent with furniture)",
 
     "᙭": "Resource block (100%)",
     "᙮": "Resource block (33%)",
@@ -81,7 +84,10 @@
     "ᑧᑩᑨᑪ": "Kitchen counter (untoppable)",
     "ᑌᑐᑎᑕ": "Kitchen counter (toppable)",
     "ᐝ": "Kitchen util (50%)",
-    "⮙⮘⮛⮚⮝⮜⮟⮞": "Fridge"
+    "⮙⮘⮛⮚⮝⮜⮟⮞": "Fridge",
+
+    "⟱⭆⟰⭅": "Ladders",
+    "ᐁᐅᐃᐊᐫᐭᐬᐮ": "Bed"
 },
 {
     " ": "Air",

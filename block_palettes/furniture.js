@@ -40,6 +40,8 @@ function makeFurniture() {
     worker.add(overridePlacement(palleteWithRotation('ᐱᐸᐯᐳ', ['cfm:oak_desk', 'cfm:spruce_desk', 'cfm:birch_desk', 'cfm:jungle_desk', 'cfm:acacia_desk', 'cfm:dark_oak_desk', 'cfm:crimson_desk', 'cfm:warped_desk'].map(x => `${x}[waterlogged=false]`))))
     worker.add(palleteWithRotation('ᐽᑅᐻᑁ', ['cfm:oak_bedside_cabinet', 'cfm:spruce_bedside_cabinet', 'cfm:birch_bedside_cabinet', 'cfm:jungle_bedside_cabinet', 'cfm:acacia_bedside_cabinet', 'cfm:dark_oak_bedside_cabinet', 'cfm:crimson_bedside_cabinet', 'cfm:warped_bedside_cabinet'].map(x => `${x}[waterlogged=false]`)))
     worker.add(makeStairs())
+    worker.add(singleBlockPallete('ᙚ', ['minecraft:oak_planks', 'minecraft:spruce_planks', 'minecraft:birch_planks', 'minecraft:jungle_planks', 'minecraft:acacia_planks', 'minecraft:dark_oak_planks', 'minecraft:crimson_planks', 'minecraft:warped_planks']))
+    worker.add(makeSlabs())
     worker.make('furniture')
 }
 
@@ -104,16 +106,12 @@ function makeStairs() {
     return combinedPalette(stairsBottom, stairsTop)
 }
 
+function makeSlabs() {
+    let base = ['minecraft:oak_slab', 'minecraft:spruce_slab', 'minecraft:birch_slab', 'minecraft:jungle_slab', 'minecraft:acacia_slab', 'minecraft:dark_oak_slab', 'minecraft:crimson_slab', 'minecraft:warped_slab']
+    return combinedPalette(
+        singleBlockPallete('ᖲ', base.map(x => `${x}[type=bottom]`)), 
+        singleBlockPallete('ᖰ', base.map(x => `${x}[type=top]`))
+    )
+}
+
 module.exports = makeFurniture
-
-// 123
-
-// 123123
-// AAABBB
-
-// 123123123123
-// AAABBBAAABBB
-// uuuuuuUUUUUU
-
-// // old palettes become old*(len(new))/base
-// // new palette becomes new.map(x => x*len(old))
