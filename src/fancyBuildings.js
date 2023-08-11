@@ -16,14 +16,11 @@ onEvent("command.registry", event => {
 
                         const pos = Arguments.BLOCK_POS_LOADED.getResult(ctx, "pos")
                         const command = `execute in ${ctx.source.level.dimension().location()} positioned ${pos.x} ${pos.y} ${pos.z} run `
-                        console.log(command)
 
                         const subFunc = Arguments.STRING.getResult(ctx, "subFunc")
-                        console.log(subFunc)
                         const level = ctx.source.level.asKJS()
                         level.getServer().schedule(200, {server: level.getServer(), command: command, subFunc: subFunc, block: block}, function (callback) {
                             let run = (cmd) => {
-                                console.log(cmd)
                                 callback.data.server.runCommandSilent(callback.data.command+cmd)
                             }
                             subFunctions[callback.data.subFunc](callback.data.block, run)
