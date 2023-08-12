@@ -141,7 +141,7 @@ function makeKitchen() {
             palleteWithRotation('⮟⮞⮝⮜', ['cookingforblockheads:fridge'])
         )
     )
-    makeSimplePalette("kitchen_fridge", fridge)
+    makeSimplePalette("kitchen_fridge", overridePlacement(fridge))
 }
 
 function makeBeds() {
@@ -159,7 +159,7 @@ module.exports = function() {
     makeSingleBlockPallete('elevator', 'e', ['elevatorid:elevator_white', 'elevatorid:elevator_light_gray', 'elevatorid:elevator_gray', 'elevatorid:elevator_black'].map(f=>f+'[directional=false]'))
     makeSingleBlockPallete('bookshelf', '⬛', [['minecraft:bookshelf', 'chipped:bookshelf_1', 'chipped:bookshelf_2', 'chipped:bookshelf_3', 'chipped:bookshelf_4', 'chipped:bookshelf_5', 'chipped:bookshelf_6', 'chipped:bookshelf_7', 'chipped:bookshelf_8', 'chipped:bookshelf_9', 'chipped:bookshelf_10', 'chipped:bookshelf_11', 'chipped:bookshelf_12', 'chipped:bookshelf_13', 'chipped:bookshelf_14', 'chipped:bookshelf_15', 'chipped:bookshelf_16']])
     makeSingleBlockPallete('enchanting_table', '⬚', ['minecraft:enchanting_table'])
-    makeSingleBlockPallete('enchanting_bookshelf', '⬜', [['minecraft:bookshelf', [0.035, 'botania:mana_pylon']]])
+    makeSimplePalette('enchanting_bookshelf', overridePlacement(singleBlockPallete('⬜', [['minecraft:bookshelf', [0.035, 'botania:mana_pylon']]])))
     makeFloralDecorations()
     makeSimplePalette('mob_head', overridePlacement(palleteWithRotation('↧↦↥↤', [[
         'tconstruct:spider_wall_head', 'tconstruct:drowned_wall_head', 'tconstruct:husk_wall_head', 'tconstruct:enderman_wall_head', 'minecraft:creeper_wall_head', 'tconstruct:blaze_wall_head', 'minecraft:zombie_wall_head', 'tconstruct:stray_wall_head', 'minecraft:skeleton_wall_skull', 'tconstruct:zombified_piglin_wall_head', 'tconstruct:piglin_brute_wall_head', 'tconstruct:piglin_wall_head', 'tconstruct:cave_spider_wall_head',
