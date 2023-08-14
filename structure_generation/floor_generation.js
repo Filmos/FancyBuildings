@@ -227,8 +227,8 @@ function generate_floors(building) {
         let floor = new WaveWorker(building).generate()
         generatedFloors.push(floor)
     }
-    console.log("----------------------------------")
-    console.log(FeatureGroup.groups.sort((a, b)=>a.placedCounter-b.placedCounter).map(g=>`${g.name}: ${g.placedCounter}`).join("\n"))
+    // console.log("----------------------------------")
+    // console.log(FeatureGroup.groups.sort((a, b)=>a.placedCounter-b.placedCounter).map(g=>`${g.name}: ${g.placedCounter}`).join("\n"))
     return generatedFloors
 }
 
